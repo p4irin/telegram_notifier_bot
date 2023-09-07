@@ -15,7 +15,7 @@ class TestSendNotification(unittest.TestCase):
             
         telegram_bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
         telegram_chat_id = os.getenv('TELEGRAM_CHAT_ID')
-        notification = "We're out of coffe! Please fix ASAP!"
+        notification = "We're out of coffee! Please fix ASAP!"
 
     @classmethod
     def setUpClass(cls) -> None:
