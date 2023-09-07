@@ -21,6 +21,9 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
     "Operating System :: POSIX :: Linux",
+    "Intended Audience :: Developers",    
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",    
 ]
 
 [project.optional-dependencies]
