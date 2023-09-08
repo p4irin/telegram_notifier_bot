@@ -52,3 +52,31 @@ class Notifier(object):
         except requests.exceptions.RequestException as e:
             raise SystemExit(e)
         
+    def send_photo(
+            self, photo: str, to_chat_id: str, caption="", 
+        ) -> requests.Response:
+        """Send a photo notification
+        
+        Args:
+            photo: The path to the photo
+            caption: Set a caption for the photo
+            to_chat_id: Identifies a Telegram user or group
+        """
+        data = {
+            'chat_id': to_chat_id,
+            'caption': caption
+        }
+
+        try:
+            with open(photo, "rb") as photo:
+                r = requests.post(
+                    f'{self._base_url}sendPhoto',
+                    data=data,
+                    files={'photo': photo}
+                )
+                r.raise_for_status()
+                return r
+        except requests.exceptions.HTTPError as err:
+            raise SystemExit(err)
+        except requests.exceptions.RequestException as e:
+            raise SystemExit(e)       
