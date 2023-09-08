@@ -33,7 +33,7 @@ class Notifier(object):
         """
         def decorated_f(*args, **kwargs):
             try:
-                method(*args, **kwargs)
+                return method(*args, **kwargs)
             except requests.exceptions.HTTPError as err:
                 raise SystemExit(err)
             except requests.exceptions.RequestException as e:
