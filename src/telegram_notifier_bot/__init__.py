@@ -70,7 +70,7 @@ class Notifier(object):
     
     @_handle_requests_exceptions
     def send_photo(
-            self, photo: str, to_chat_id: str, caption="", 
+            self, photo: str, to_chat_id: str, caption: str="", 
         ) -> requests.Response:
         """Send a photo notification.
         
