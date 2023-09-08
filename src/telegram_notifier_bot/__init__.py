@@ -10,6 +10,7 @@ __version__ = '1.0.0'
 
 
 import requests
+from types import FunctionType
 
 
 class Notifier(object):
@@ -22,8 +23,8 @@ class Notifier(object):
     def __init__(self, token: str) -> None:
         self._base_url = f'https://api.telegram.org/bot{token}/'
 
-    def _handle_requests_exceptions(method):
-        """Decorate a method with exception handling for requests methods.
+    def _handle_requests_exceptions(method: FunctionType) -> FunctionType:
+        """Decorate a method with exception handling for requests' methods.
         
         Args:
             method: A method that uses a method of the requests module.
@@ -31,7 +32,7 @@ class Notifier(object):
         Returns:
             Returns the method decorated with exception handling.
         """
-        def decorated_f(*args, **kwargs):
+        def decorated_f(*args, **kwargs) -> requests.Response:
             try:
                 return method(*args, **kwargs)
             except requests.exceptions.HTTPError as err:
