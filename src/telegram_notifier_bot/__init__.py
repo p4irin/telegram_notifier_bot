@@ -6,7 +6,7 @@ E.g., send a notification triggered by some event in a monitoring system.
 
 __author__ = 'p4irin'
 __email__ = '139928764+p4irin@users.noreply.github.com'
-__version__ = '0.0.1'
+__version__ = '1.0.0'
 
 
 import requests

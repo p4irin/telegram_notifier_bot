@@ -1,4 +1,4 @@
-# telegram_notifier_bot - v0.0.1
+# telegram_notifier_bot - v1.0.0
 
 A simple package to send notifications to a Telegram user or group. 
 
