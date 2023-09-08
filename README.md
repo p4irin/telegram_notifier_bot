@@ -49,15 +49,19 @@ Type "help", "copyright", "credits" or "license" for more information.
 ```bash
 (venv) $ export TELEGRAM_BOT_TOKEN=<Your Telegram bot token>
 (venv) $ export TELEGRAM_CHAT_ID=<Recipient(s) chat or group id>
+(venv) $ export TELEGRAM_PATH_TO_PHOTO=<File system path to photo>
 (venv) $ python
 Python 3.8.10 (default, Jun  2 2021, 10:49:15) 
 [GCC 9.4.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import os
->>> import telegram_notifier_bot
+>>> from telegram_notifier_bot import Notifier
 >>> token = os.getenv('TELEGRAM_BOT_TOKEN')
 >>> chat_id = os.getenv('TELEGRAM_CHAT_ID')
->>> telegram_notifier_bot.send(token, chat_id, "We're out of coffee! Please fix ASAP!")
+>>> photo = os.getenv('TELEGRAM_PATH_TO_PHOTO')
+>>> notifier = Notifier(token)
+>>> notifier.send("We're out of coffee! Please fix ASAP!", chat_id)
+>>> notifier.send_photo(photo, chat_id)
 >>>
 ```
 
