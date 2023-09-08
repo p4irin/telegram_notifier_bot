@@ -54,10 +54,11 @@ Python 3.8.10 (default, Jun  2 2021, 10:49:15)
 [GCC 9.4.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import os
->>> import telegram_notifier_bot
+>>> from telegram_notifier_bot import Notifier
 >>> token = os.getenv('TELEGRAM_BOT_TOKEN')
 >>> chat_id = os.getenv('TELEGRAM_CHAT_ID')
->>> telegram_notifier_bot.send(token, chat_id, "We're out of coffee! Please fix ASAP!")
+>>> notifier = Notifier(token)
+>>> notifier.send("We're out of coffee! Please fix ASAP!", chat_id)
 >>>
 ```
 
