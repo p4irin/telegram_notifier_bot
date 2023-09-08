@@ -12,28 +12,43 @@ __version__ = '0.0.1'
 import requests
 
 
-def send(token: str, chat_id: str, notification: str) -> requests.Response:
-    """Send a notification.
-    
-    Args:
-        token: The Telegram bot token
-        chat_id: Identifies a Telegram user or group
-        notification: Tell the recipient(s) what happened
-
-    Returns:
-        requests.Response: Allow the caller access to and handling the response
-
-    Raises:
-        SystemExit: On all exceptions
+class Notifier(object):
     """
-    try:
-        r = requests.get(
-            f'https://api.telegram.org/bot{token}/sendMessage?'
-            + f'chat_id={chat_id}&text={notification}'
-        )
-        r.raise_for_status()
-        return r
-    except requests.exceptions.HTTPError as err:
-        raise SystemExit(err)
-    except requests.exceptions.RequestException as e:
-        raise SystemExit(e)
+    Sends notifications.
+
+    Args:
+        token: Telegram bot token
+    """
+    def __init__(self, token: str) -> None:
+        self._base_url = f'https://api.telegram.org/bot{token}/'
+
+    def send(self, notification: str, to_chat_id: str) -> requests.Response:
+        """Send a text notification.
+        
+        Args:
+            notification: Tell the recipient(s) what happened
+            to_chat_id: Identifies a Telegram user or group
+
+        Returns:
+            requests.Response: Allow the caller access to and handling the
+            response
+
+        Raises:
+            SystemExit: On all exceptions
+        """
+        data = {
+            'chat_id': to_chat_id,
+            'text': notification
+        }
+        try:
+            r = requests.get(
+                f'{self._base_url}sendMessage',
+                data=data
+            )
+            r.raise_for_status()
+            return r
+        except requests.exceptions.HTTPError as err:
+            raise SystemExit(err)
+        except requests.exceptions.RequestException as e:
+            raise SystemExit(e)
+        
