@@ -1,7 +1,7 @@
 import unittest
 import os
 from dotenv import load_dotenv
-from telegram_notifier_bot import send
+from telegram_notifier_bot import Notifier
 
 
 load_dotenv()
@@ -19,7 +19,7 @@ class TestSendNotification(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        pass
+        cls._notifier = Notifier(cls._TestData.telegram_bot_token)
 
     def setUp(self) -> None:
         pass
@@ -32,9 +32,8 @@ class TestSendNotification(unittest.TestCase):
         pass
 
     def test(self) -> None:
-        response = send(
-            self._TestData.telegram_bot_token,
-            self._TestData.telegram_chat_id,
-            self._TestData.notification
+        response = self._notifier.send(
+            self._TestData.notification,
+            self._TestData.telegram_chat_id
         )
         self.assertTrue(response.status_code == 200)
