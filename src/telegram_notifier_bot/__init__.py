@@ -22,16 +22,36 @@ class Notifier(object):
     def __init__(self, token: str) -> None:
         self._base_url = f'https://api.telegram.org/bot{token}/'
 
+    def _handle_requests_exceptions(method):
+        """Decorate a method with exception handling for requests methods.
+        
+        Args:
+            method: A method that uses a method of the requests module.
+
+        Returns:
+            Returns the method decorated with exception handling.
+        """
+        def decorated_f(*args, **kwargs):
+            try:
+                method(*args, **kwargs)
+            except requests.exceptions.HTTPError as err:
+                raise SystemExit(err)
+            except requests.exceptions.RequestException as e:
+                raise SystemExit(e)            
+
+        return decorated_f    
+
+    @_handle_requests_exceptions
     def send(self, notification: str, to_chat_id: str) -> requests.Response:
         """Send a text notification.
         
         Args:
-            notification: Tell the recipient(s) what happened
-            to_chat_id: Identifies a Telegram user or group
+            notification: Tell the recipient(s) what happened.
+            to_chat_id: Identifies a Telegram user or group.
 
         Returns:
             requests.Response: Allow the caller access to and handling the
-            response
+                response
 
         Raises:
             SystemExit: On all exceptions
@@ -40,43 +60,42 @@ class Notifier(object):
             'chat_id': to_chat_id,
             'text': notification
         }
-        try:
-            r = requests.get(
-                f'{self._base_url}sendMessage',
-                data=data
-            )
-            r.raise_for_status()
-            return r
-        except requests.exceptions.HTTPError as err:
-            raise SystemExit(err)
-        except requests.exceptions.RequestException as e:
-            raise SystemExit(e)
-        
+
+        r = requests.get(
+            f'{self._base_url}sendMessage',
+            data=data
+        )
+        r.raise_for_status()
+        return r
+    
+    @_handle_requests_exceptions
     def send_photo(
             self, photo: str, to_chat_id: str, caption="", 
         ) -> requests.Response:
-        """Send a photo notification
+        """Send a photo notification.
         
         Args:
-            photo: The path to the photo
-            caption: Set a caption for the photo
-            to_chat_id: Identifies a Telegram user or group
+            photo: The path to the photo.
+            to_chat_id: Identifies a Telegram user or group.
+            caption: Set a caption for the photo.
+
+        Returns:
+            requests.Response: Allow the caller access to and handling the
+                response
+
+        Raises:
+            SystemExit: On all exceptions
         """
         data = {
             'chat_id': to_chat_id,
             'caption': caption
         }
 
-        try:
-            with open(photo, "rb") as photo:
-                r = requests.post(
-                    f'{self._base_url}sendPhoto',
-                    data=data,
-                    files={'photo': photo}
-                )
-                r.raise_for_status()
-                return r
-        except requests.exceptions.HTTPError as err:
-            raise SystemExit(err)
-        except requests.exceptions.RequestException as e:
-            raise SystemExit(e)       
+        with open(photo, "rb") as photo:
+            r = requests.post(
+                f'{self._base_url}sendPhoto',
+                data=data,
+                files={'photo': photo}
+            )
+            r.raise_for_status()
+            return r    
